@@ -71,7 +71,9 @@ func (e *ExponentialBackoff) NextInterval() time.Duration {
 	backoffInterval := float64(e.BackoffInterval) * exponent
 
 	// prevent interval to exceed max interval
-	backoffInterval = math.Min(backoffInterval, float64(e.MaxInterval))
+	if e.MaxInterval > 0 {
+		backoffInterval = math.Min(backoffInterval, float64(e.MaxInterval))
+	}
 
 	var jitter int64
 	if e.JitterInterval <= 0 {

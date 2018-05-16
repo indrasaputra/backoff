@@ -24,14 +24,14 @@ before_script:
   # install dep
   - go get -u github.com/golang/dep/cmd/dep
   # install dependencies
-  - dep ensure
+  - make dep
 
 
 script:
   # test gofmt
   - test -z $(gofmt -s -l $GO_FILES) 
   # run all tests with race detector
-  - go test -v -race ./...
+  - make test
   # run go vet
   - go vet ./...
   # "go vet on steroids" + linter

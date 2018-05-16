@@ -83,3 +83,8 @@ func (e *ExponentialBackoff) NextInterval() time.Duration {
 	e.counter++
 	return time.Duration(backoffInterval + float64(jitter))
 }
+
+// Reset resets Exponential Backoff.
+func (e *ExponentialBackoff) Reset() {
+	e.counter = 0
+}

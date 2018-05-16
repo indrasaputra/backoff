@@ -9,26 +9,64 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestConstantBackoff_(t *testing.T) {
+	b := &backoff.ConstantBackoff{}
+	assert.Implements(t, (*backoff.Backoff)(nil), b)
+}
+
 func TestConstantBackoff_Interval(t *testing.T) {
 	backoffInterval := 500 * time.Millisecond
-	jitterInterval := 200 * time.Millisecond
-	c := backoff.ConstantBackoff{
+	jitterInterval := 100 * time.Millisecond
+	c1 := backoff.ConstantBackoff{
 		BackoffInterval: backoffInterval,
 		JitterInterval:  jitterInterval,
 	}
 
-	for i := -100; i < 1; i++ {
-		t.Run("test:"+strconv.Itoa(i), func(t *testing.T) {
-			b := c.Interval(i)
-			assert.Equal(t, time.Duration(0), b)
+	// test without reset
+	for i := 0; i < 50; i++ {
+		t.Run("constant backoff with jitter :"+strconv.Itoa(i), func(t *testing.T) {
+			b := c1.NextInterval()
+			assert.True(t, b >= backoffInterval)
+			assert.True(t, b < backoffInterval+jitterInterval)
 		})
 	}
 
-	for i := 1; i < 100; i++ {
-		t.Run("test:"+strconv.Itoa(i), func(t *testing.T) {
-			b := c.Interval(i)
+	// test with reset
+	for i := 0; i < 50; i++ {
+		t.Run("constant backoff with jitter :"+strconv.Itoa(i), func(t *testing.T) {
+			b := c1.NextInterval()
 			assert.True(t, b >= backoffInterval)
 			assert.True(t, b < backoffInterval+jitterInterval)
+
+			c1.Reset()
+			b = c1.NextInterval()
+			assert.True(t, b >= backoffInterval)
+			assert.True(t, b < backoffInterval+jitterInterval)
+		})
+	}
+
+	backoffInterval = 100 * time.Millisecond
+	c2 := backoff.ConstantBackoff{
+		BackoffInterval: backoffInterval,
+	}
+
+	// test without reset
+	for i := 0; i < 50; i++ {
+		t.Run("constant backoff without jitter :"+strconv.Itoa(i), func(t *testing.T) {
+			b := c2.NextInterval()
+			assert.Equal(t, backoffInterval, b)
+		})
+	}
+
+	// test with reset
+	for i := 0; i < 50; i++ {
+		t.Run("constant backoff without jitter :"+strconv.Itoa(i), func(t *testing.T) {
+			b := c2.NextInterval()
+			assert.Equal(t, backoffInterval, b)
+
+			c2.Reset()
+			b = c2.NextInterval()
+			assert.Equal(t, backoffInterval, b)
 		})
 	}
 }

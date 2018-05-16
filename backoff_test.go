@@ -9,6 +9,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// tests for constant backoff
+
 func TestConstantBackoff_(t *testing.T) {
 	b := &backoff.ConstantBackoff{}
 	assert.Implements(t, (*backoff.Backoff)(nil), b)
@@ -69,4 +71,11 @@ func TestConstantBackoff_Interval(t *testing.T) {
 			assert.Equal(t, backoffInterval, b)
 		})
 	}
+}
+
+// tests for exponential backoff
+
+func TestExponentialBackoff_(t *testing.T) {
+	b := &backoff.ExponentialBackoff{}
+	assert.Implements(t, (*backoff.Backoff)(nil), b)
 }

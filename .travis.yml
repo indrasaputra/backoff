@@ -1,0 +1,42 @@
+# define programming language
+language: go
+
+# specify which go version should be tested against project
+go:
+  - "1.10"
+  - "1.9"
+  - master
+
+matrix:
+  # because master could be unstable, allow failure only on master
+  allow_failures:
+    - go: master
+
+before_script:
+  # all .go files, excluding vendor/
+  - GO_FILES=$(find . -iname '*.go' -type f | grep -v /vendor/)
+  # install linter
+  - go get github.com/golang/lint/golint
+  # install static analyzer/linter
+  - go get honnef.co/go/tools/cmd/megacheck
+  # install gocyclo
+  - go get github.com/fzipp/gocyclo
+  # install dep
+  - go get -u github.com/golang/dep/cmd/dep
+  # install dependencies
+  - dep ensure
+
+
+script:
+  # test gofmt
+  - test -z $(gofmt -s -l $GO_FILES) 
+  # run all tests with race detector
+  - go test -v -race ./...
+  # run go vet
+  - go vet ./...
+  # "go vet on steroids" + linter
+  - megacheck ./...
+  # forbid code with huge functions
+  - gocyclo -over 19 $GO_FILES
+  # linter
+  - golint -set_exit_status $(go list ./...)

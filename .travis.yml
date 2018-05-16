@@ -29,7 +29,7 @@ before_script:
 
 script:
   # test gofmt
-  test -z $(gofmt -s -l $GO_FILES) 
+  - test -z $(gofmt -s -l $GO_FILES) 
   # run all tests with race detector
   - go test -v -race ./...
   # run go vet

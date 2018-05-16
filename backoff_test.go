@@ -84,3 +84,19 @@ func TestExponentialBackoff_(t *testing.T) {
 	b := &backoff.ExponentialBackoff{}
 	assert.Implements(t, (*backoff.Backoff)(nil), b)
 }
+
+func TestExponentialBackoff_Reset(t *testing.T) {
+	backoffInterval := 100 * time.Millisecond
+	e := backoff.ExponentialBackoff{
+		BackoffInterval: backoffInterval,
+	}
+
+	t.Run("exponential backoff reset", func(t *testing.T) {
+		b := e.NextInterval()
+		assert.Equal(t, backoffInterval, b)
+
+		e.Reset()
+		b = e.NextInterval()
+		assert.Equal(t, backoffInterval, b)
+	})
+}

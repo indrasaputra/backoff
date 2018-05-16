@@ -5,12 +5,6 @@ language: go
 go:
   - "1.10"
   - "1.9"
-  - master
-
-matrix:
-  # because master could be unstable, allow failure only on master
-  allow_failures:
-    - go: master
 
 before_script:
   # all .go files, excluding vendor/

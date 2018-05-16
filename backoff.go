@@ -1,6 +1,7 @@
 package backoff
 
 import (
+	"math"
 	"math/rand"
 	"time"
 )
@@ -62,4 +63,23 @@ type ExponentialBackoff struct {
 	Multiplier int
 	// counter defines how many times NextInterval is called.
 	counter int
+}
+
+// NextInterval returns next interval.
+func (e *ExponentialBackoff) NextInterval() time.Duration {
+	exponent := math.Pow(float64(e.Multiplier), float64(e.counter))
+	backoffInterval := float64(e.BackoffInterval) * exponent
+
+	// prevent interval to exceed max interval
+	backoffInterval = math.Min(backoffInterval, float64(e.MaxInterval))
+
+	var jitter int64
+	if e.JitterInterval <= 0 {
+		jitter = 0
+	} else {
+		jitter = rand.Int63n(int64(e.JitterInterval))
+	}
+
+	e.counter++
+	return time.Duration(backoffInterval + float64(jitter))
 }

@@ -67,7 +67,10 @@ type ExponentialBackoff struct {
 
 // NextInterval returns next interval.
 func (e *ExponentialBackoff) NextInterval() time.Duration {
-	exponent := math.Pow(float64(e.Multiplier), float64(e.counter))
+	// minimum multiplier should be 1
+	multipler := math.Max(1, float64(e.Multiplier))
+
+	exponent := math.Pow(multipler, float64(e.counter))
 	backoffInterval := float64(e.BackoffInterval) * exponent
 
 	// prevent interval to exceed max interval

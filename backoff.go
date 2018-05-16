@@ -41,3 +41,16 @@ func (c *ConstantBackoff) NextInterval() time.Duration {
 // since constant backoff will always constant all the time.
 func (c *ConstantBackoff) Reset() {
 }
+
+// ExponentialBackoff implements Backoff using exponential interval.
+type ExponentialBackoff struct {
+	// BackoffInterval defines how long the next interval will be, compared to the previous one.
+	BackoffInterval time.Duration
+	// JitterInterval defines the additional value for interval.
+	// The additional value will be in range [0,JitterInterval).
+	JitterInterval time.Duration
+	// state defines the state of the backoff.
+	// basically, it is just an integer indicating
+	// how many times NextInterval is called.
+	state int
+}

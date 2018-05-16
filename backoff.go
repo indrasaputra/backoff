@@ -60,8 +60,6 @@ type ExponentialBackoff struct {
 	// Using `Multiplier = 1` means ExponentialBackoff can behave
 	// like ConstantBackoff.
 	Multiplier int
-	// state defines the state of the backoff.
-	// basically, it is just an integer indicating
-	// how many times NextInterval is called.
-	state int
+	// counter defines how many times NextInterval is called.
+	counter int
 }

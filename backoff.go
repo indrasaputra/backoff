@@ -17,7 +17,7 @@ type Backoff interface {
 	Reset()
 }
 
-// ConstantBackoff implements Intervaler using constant interval.
+// ConstantBackoff implements Backoff using constant interval.
 type ConstantBackoff struct {
 	// BackoffInterval defines how long the next interval will be, compared to the previous one.
 	BackoffInterval time.Duration
@@ -26,12 +26,18 @@ type ConstantBackoff struct {
 	JitterInterval time.Duration
 }
 
-// Interval returns n-th interval.
-func (c *ConstantBackoff) Interval(order int) time.Duration {
-	if order <= 0 {
-		return 0
+// NextInterval returns next interval.
+func (c *ConstantBackoff) NextInterval() time.Duration {
+	if c.JitterInterval <= 0 {
+		return c.BackoffInterval
 	}
 
 	jitter := rand.Int63n(int64(c.JitterInterval))
 	return time.Duration(c.BackoffInterval + time.Duration(jitter))
+}
+
+// Reset resets Constant Backoff.
+// Actually, it does nothing
+// since constant backoff will always constant all the time.
+func (c *ConstantBackoff) Reset() {
 }

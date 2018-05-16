@@ -9,14 +9,12 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-// Intervaler is an interface that defines method to be used when implementing interval
-// of two subsequent time.
-type Intervaler interface {
-	// Interval defines the n-th interval.
-	// Please, note that the valid order (n value) is a positive integer.
-	// If non-positive integer (including zero) is given, the method should return 0,
-	// which indicates that there is no interval.
-	Interval(order int) time.Duration
+// Backoff is an interface for backoff-strategy.
+type Backoff interface {
+	// NextInterval returns an interval before the next process is executed.
+	NextInterval() time.Duration
+	// Reset resets backoff to its initial state.
+	Reset()
 }
 
 // ConstantBackoff implements Intervaler using constant interval.

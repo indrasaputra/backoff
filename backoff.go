@@ -13,6 +13,9 @@ func init() {
 // of two subsequent time.
 type Intervaler interface {
 	// Interval defines the n-th interval.
+	// Please, note that the valid order (n value) is a positive integer.
+	// If non-positive integer (including zero) is given, the method should return 0,
+	// which indicates that there is no interval.
 	Interval(order int) time.Duration
 }
 

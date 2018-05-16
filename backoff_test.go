@@ -12,8 +12,8 @@ import (
 // tests for constant backoff
 
 func TestConstantBackoff_(t *testing.T) {
-	b := &backoff.ConstantBackoff{}
-	assert.Implements(t, (*backoff.Backoff)(nil), b)
+	c := &backoff.ConstantBackoff{}
+	assert.Implements(t, (*backoff.Backoff)(nil), c)
 }
 
 func TestConstantBackoff_Interval(t *testing.T) {
@@ -71,6 +71,11 @@ func TestConstantBackoff_Interval(t *testing.T) {
 			assert.Equal(t, backoffInterval, b)
 		})
 	}
+}
+
+func TestConstantBackoff_Reset(t *testing.T) {
+	c := backoff.ConstantBackoff{}
+	assert.NotPanics(t, func() { c.Reset() })
 }
 
 // tests for exponential backoff

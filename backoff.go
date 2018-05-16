@@ -49,6 +49,17 @@ type ExponentialBackoff struct {
 	// JitterInterval defines the additional value for interval.
 	// The additional value will be in range [0,JitterInterval).
 	JitterInterval time.Duration
+	// MaxInterval defines the maximum interval allowed.
+	// If this field is let empty,
+	// it means that there is no maximum value for interval.
+	// Please, keep in mind that if this field is empty,
+	// the interval can be a very long time.
+	MaxInterval time.Duration
+	// Multipler defines the multipler for the next interval.
+	// Default value for Multiplier is 1.
+	// Using `Multiplier = 1` means ExponentialBackoff can behave
+	// like ConstantBackoff.
+	Multiplier int
 	// state defines the state of the backoff.
 	// basically, it is just an integer indicating
 	// how many times NextInterval is called.

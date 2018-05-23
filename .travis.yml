@@ -1,3 +1,7 @@
+env:
+  global:
+    - CC_TEST_REPORTER_ID=662ee0f32545f8facf51b0f403a625e2717605a73bd1df346e849539e0602e26
+
 # define programming language
 language: go
 
@@ -20,12 +24,16 @@ before_script:
   # install dependencies
   - make dep
 
+  # download coverage reporter
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 
 script:
   # test gofmt
   - test -z $(gofmt -s -l $GO_FILES) 
-  # run all tests with race detector
-  - make test
+  # run all tests
+  - go test -coverprofile c.out ./...
   # run go vet
   - go vet ./...
   # "go vet on steroids" + linter
@@ -34,3 +42,6 @@ script:
   - gocyclo -over 19 $GO_FILES
   # linter
   - golint -set_exit_status $(go list ./...)
+
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

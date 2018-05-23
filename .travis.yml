@@ -20,12 +20,16 @@ before_script:
   # install dependencies
   - make dep
 
+  # install goveralls
+  - go get github.com/mattn/goveralls
+
 
 script:
   # test gofmt
   - test -z $(gofmt -s -l $GO_FILES) 
-  # run all tests with race detector
-  - make test
+  # run all tests
+  - go test -coverprofile=coverage.out
+  - goveralls -coverprofile=coverage.out -service=travis-ci -repotoken 9We7aRhpr5K1xgDEUMqkoj8GO11tmpmZVsjf7
   # run go vet
   - go vet ./...
   # "go vet on steroids" + linter

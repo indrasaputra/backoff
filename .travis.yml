@@ -13,7 +13,7 @@ before_script:
   # all .go files, excluding vendor/
   - GO_FILES=$(find . -iname '*.go' -type f | grep -v /vendor/)
   # install linter
-  - go get github.com/golang/lint/golint
+  - go get golang.org/x/lint/golint
   # install static analyzer/linter
   - go get honnef.co/go/tools/cmd/staticcheck
   # install gocyclo

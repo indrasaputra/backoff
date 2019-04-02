@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/indrasaputra/backoff.svg?branch=master)](https://travis-ci.org/indrasaputra/backoff)
+[![codecov](https://codecov.io/gh/indrasaputra/backoff/branch/master/graph/badge.svg)](https://codecov.io/gh/indrasaputra/backoff)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/d13382387166b72007db/test_coverage)](https://codeclimate.com/github/indrasaputra/backoff/test_coverage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/d13382387166b72007db/maintainability)](https://codeclimate.com/github/indrasaputra/backoff/maintainability)
 [![Go Report Card](https://goreportcard.com/badge/github.com/indrasaputra/backoff)](https://goreportcard.com/report/github.com/indrasaputra/backoff)

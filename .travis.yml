@@ -12,11 +12,9 @@ before_script:
   # install linter
   - go get github.com/golang/lint/golint
   # install static analyzer/linter
-  - go get honnef.co/go/tools/cmd/megacheck
+  - go get honnef.co/go/tools/cmd/staticcheck
   # install gocyclo
   - go get github.com/fzipp/gocyclo
-  # install dep
-  - go get -u github.com/golang/dep/cmd/dep
   # install dependencies
   - make dep
 

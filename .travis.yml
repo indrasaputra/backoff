@@ -21,11 +21,6 @@ before_script:
   # install dependencies
   - make vendor
 
-  # download coverage reporter
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
-
 script:
   # test gofmt
   - test -z $(gofmt -s -l $GO_FILES) 
@@ -39,9 +34,6 @@ script:
   - gocyclo -over 19 $GO_FILES
   # linter
   - golint -set_exit_status $(go list ./...)
-
-after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

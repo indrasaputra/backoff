@@ -5,9 +5,18 @@ language: go
 go:
   - "1.12.x"
   - "1.11.x"
+  - tip
 
 env:
   - GO111MODULE=off
+
+matrix:
+  allow_failures:
+    - go: tip
+  fast_finish: true
+
+notifications:
+  email: false
 
 before_script:
   # all .go files, excluding vendor/
